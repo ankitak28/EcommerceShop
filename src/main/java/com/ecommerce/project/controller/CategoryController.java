@@ -1,6 +1,8 @@
 package com.ecommerce.project.controller;
 
 import com.ecommerce.project.model.Category;
+import com.ecommerce.project.payload.CategoryDTO;
+import com.ecommerce.project.payload.CategoryResponse;
 import com.ecommerce.project.service.CategoryService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,36 +26,36 @@ public class CategoryController {
 //    }
 
     @GetMapping("/public/categories")
-    public ResponseEntity<List<Category>> getAllCategories() {
-        List<Category> categories = categoryService.getAllCategories();
-        return new ResponseEntity<>(categories,HttpStatus.OK);
+    public ResponseEntity<CategoryResponse> getAllCategories() {
+        CategoryResponse categoryResponse = categoryService.getAllCategories();
+        return new ResponseEntity<>(categoryResponse,HttpStatus.OK);
     }
 
     @PostMapping("/public/categories")
-    public ResponseEntity<String> addCategory(@Valid @RequestBody Category category) {
+    public ResponseEntity<CategoryDTO> addCategory(@Valid @RequestBody CategoryDTO categoryDTO) {
 
-        categoryService.createCategory(category);
-        return new ResponseEntity<>("category created",HttpStatus.CREATED);
+        CategoryDTO savedCategoryDTO = categoryService.createCategory(categoryDTO);
+        return new ResponseEntity<>(savedCategoryDTO,HttpStatus.CREATED);
     }
 
     @DeleteMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable int categoryId) {
+    public ResponseEntity<CategoryDTO> deleteCategory(@PathVariable int categoryId) {
 
-            String status = categoryService.deleteCategory(categoryId);
+            CategoryDTO categoryDTO = categoryService.deleteCategory(categoryId);
 
             /*
                 * ResponseEntity is used to communicate with a proper message and status code to the client.
                 * ResponseEntity can be used in various ways to return status code and message.
              */
-            return ResponseEntity.status(HttpStatus.OK).body(status);
+            return new ResponseEntity<>(categoryDTO,HttpStatus.OK);
 
     }
 
     @PutMapping("/admin/categories/{categoryId}")
-    public ResponseEntity<String> updateCategory(@Valid @RequestBody Category category, @PathVariable Long categoryId) {
+    public ResponseEntity<CategoryDTO> updateCategory(@Valid @RequestBody CategoryDTO categoryDTO, @PathVariable Long categoryId) {
 
-            Category savedCategory = categoryService.updateCategory(category,categoryId);
-            return new ResponseEntity<>("category updated", HttpStatus.OK);
+            CategoryDTO savedCategoryDTO = categoryService.updateCategory(categoryDTO,categoryId);
+            return new ResponseEntity<>(savedCategoryDTO, HttpStatus.OK);
 
     }
 }
