@@ -12,7 +12,7 @@ public interface CategoryService {
 
     //Service is required to achieve loose coupling
 
-    CategoryResponse getAllCategories();
+    CategoryResponse getAllCategories(Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     CategoryDTO createCategory(CategoryDTO categoryDTO);
 
