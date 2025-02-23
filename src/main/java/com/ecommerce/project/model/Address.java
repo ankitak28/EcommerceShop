@@ -35,7 +35,8 @@ public class Address {
     private String country;
     @Size(min=6,message = "pincode must be atleast 6 chars")
     private String pincode;
-    @ManyToMany(mappedBy = "addresses")
-    private List<User> user = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 }
